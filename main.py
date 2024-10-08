@@ -1,8 +1,9 @@
-const express = require('express');
-const app = express();
-const port = 3000;
+from flask import Flask, jsonify
+import random
 
-const adjectives = [
+app = Flask(__name__)
+
+adjectives = [
     'sweet', 'adorable', 'lovely', 'charming', 'cute', 
     'playful', 'friendly', 'gentle', 'loyal', 'affectionate', 
     'happy', 'energetic', 'cuddly', 'cheerful', 'brave', 
@@ -11,13 +12,16 @@ const adjectives = [
     'radiant', 'delightful', 'endearing', 'heartwarming', 'joyful',
     'magnificent', 'majestic', 'noble', 'splendid', 'stunning',
     'vibrant', 'whimsical', 'witty', 'zesty', 'zealous'
-];
+]
 
-app.get('/dog', (req, res) => {
-    const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-    res.json({ adjective: randomAdjective });
-});
+@app.route('/dog', methods=['GET'])
+def get_dog_description():
+    random_adjective = random.choice(adjectives)
+    return jsonify({'msg': f'Bobby is {random_adjective}'})
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+@app.route('/')
+def index():
+    return 'hello im adrian :p'
+
+if __name__ == '__main__':
+    app.run(debug=True, port=3000)
